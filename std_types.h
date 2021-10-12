@@ -19,17 +19,13 @@ typedef unsigned char bool;
 typedef unsigned char boolean;
 
 typedef char int8;
-typedef char sint8;
 typedef unsigned char uint8;
-typedef long char int16;
-typedef long char sint16;
-typedef unsigned long char uint16;
-typedef long long char int32;
-typedef long long char sint32;
-typedef unsigned long long char uint32;
-typedef long long long char int64;
-typedef long long long char sint64;
-typedef unsigned long long long char uint64;
+typedef unsigned int uint16;
+typedef int int16;
+typedef long int32;
+typedef unsigned long uint32;
+typedef long long int64;
+typedef unsigned long long uint64;
 
 typedef float float32;
 typedef double float64;

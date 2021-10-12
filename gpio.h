@@ -61,11 +61,15 @@ typedef enum
  * 				not valid for run time
  * */
 #define GPIO_READ_PIN(PORT_CHAR,PIN_ID) ((PORT##(PORT_CHAR))>>PIN_ID)&0x01
-#define GPIO_READ_PORT(PORT_CHAR) (PORT##(PORT_CHAR))
-#define GPIO_WRITE_PIN(PORT_CHAR,PIN_ID,DATA) (((PORT##(PORT_CHAR)))=(DATA)?((PORT##(PORT_CHAR))|(1<<(PIN_ID))):((PORT##(PORT_CHAR))&(~(1<<(PIN_ID)))));
+#define GPIO_READ_PORT_BY_CHAR(PORT_CHAR) (PORT##(PORT_CHAR))
+#define GPIO_WRITE_PIN(PORT_CHAR,PIN_ID,DATA) (((PORT##(PORT_CHAR)))=(DATA)?((PORT##(PORT_CHAR))|(1<<(PIN_ID))):((PORT##(PORT_CHAR))&(~(1<<(PIN_ID)))))
 #define GPIO_WRITE_PORT(PORT_CHAR,DATA) (PORT##(PORT_CHAR))=(DATA)
 #define GPIO_SETUP_PORT_DIRECTION(PORT_CHAR,DIRECTION) ((DDR##PORT_CHAR)=(DIRECTION))
-#define GPIO_SETUP_PIT_DIRECTION(PORT_CHAR,PIN_ID,DIRECTION) (((DDR##(PORT_CHAR)))=(DIRECTION)?((DDR##(PORT_CHAR))|(1<<(PIN_ID))):((PORT##(PORT_CHAR))&(~(1<<(PIN_ID)))));
+#define GPIO_SETUP_PIT_DIRECTION(PORT_CHAR,PIN_ID,DIRECTION) (((DDR##(PORT_CHAR)))=(DIRECTION)?((DDR##(PORT_CHAR))|(1<<(PIN_ID))):((PORT##(PORT_CHAR))&(~(1<<(PIN_ID)))))
+/*TODO will deleted after check if it's junk
+#define GPIO_READ_PORT(A_PORTX_ID) (PORTX)*/
+
+
 /*----------------------------------------------------*/
 
 
@@ -80,9 +84,11 @@ typedef enum
 uint8 GPIO_readPin(uint8 a_portId,uint8 a_pinId);
 uint8 GPIO_readPort(uint8 a_portId);
 void GPIO_writePin(uint8 a_portId,uint8 a_pinId,boolean a_data);
-void GPIO_writePort(uint8 a_portId,boolean a_data);
+void GPIO_writePort(uint8 a_portId,uint8 a_data);
+/*TODO GPIO_writeFirstNPins function*/
+void GPIO_writeFirstNPins(uint8 a_portId,uint8 a_firstNPins,uint8 a_data);
 void GPIO_setupPortDirection(uint8 a_portId,GPIO_PortDirectionType a_direction);
 void GPIO_setupPinDirection(uint8 a_portId,uint8 a_pinId,GPIO_PinDirectionType a_direction);
-
+void GPIO_setupFirstNPins(uint8 a_portId,uint8 a_firstNPins,GPIO_PinDirectionType a_direction);
 
 #endif /* GPIO_H_ */
