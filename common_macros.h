@@ -16,7 +16,6 @@
 #ifndef COMMON_MACROS_H_
 #define COMMON_MACROS_H_
 
-
 /*--------------------------- macro constant ---------------------------*/
 #ifndef TRUE
 	#define TRUE (1u)
@@ -98,6 +97,10 @@
 #endif
 
 #define FIRST_BITS_HIGH(NUM) ((1<<(NUM))-1)
+
+#define REGESTER_INSERT_VALUE(REG,BIT_NUM,BOOLEAN_DATA) ((((REG)&(~(1<<(BIT_NUM))))|((BOOLEAN_DATA)<<(BIT_NUM))))
+
+#define REGESTER_INSERT_VALUES(REG,BIT_NUM,NUM_BITS,DATA) ((((REG)&(~(((1<<(NUM_BITS))-1)<<(BIT_NUM))))|((DATA)<<(BIT_NUM))))
 /*----------------------------------------------------------------------*/
 
 
