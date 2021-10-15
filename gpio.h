@@ -60,12 +60,14 @@ typedef enum
  * 				increase code size
  * 				not valid for run time
  * */
+/*TODO reimplement the following macro funtions */
 #define GPIO_READ_PIN(PORT_CHAR,PIN_ID) ((PORT##(PORT_CHAR))>>PIN_ID)&0x01
 #define GPIO_READ_PORT_BY_CHAR(PORT_CHAR) (PORT##(PORT_CHAR))
 #define GPIO_WRITE_PIN(PORT_CHAR,PIN_ID,DATA) (((PORT##(PORT_CHAR)))=(DATA)?((PORT##(PORT_CHAR))|(1<<(PIN_ID))):((PORT##(PORT_CHAR))&(~(1<<(PIN_ID)))))
 #define GPIO_WRITE_PORT(PORT_CHAR,DATA) (PORT##(PORT_CHAR))=(DATA)
 #define GPIO_SETUP_PORT_DIRECTION(PORT_CHAR,DIRECTION) ((DDR##PORT_CHAR)=(DIRECTION))
 #define GPIO_SETUP_PIT_DIRECTION(PORT_CHAR,PIN_ID,DIRECTION) (((DDR##(PORT_CHAR)))=(DIRECTION)?((DDR##(PORT_CHAR))|(1<<(PIN_ID))):((PORT##(PORT_CHAR))&(~(1<<(PIN_ID)))))
+#define GPIO_INSERT_SUCCESSIVE_BITS(REG,BIT_NUM,NUM_BITS,DATA) ((((REG)&(~(((1<<(NUM_BITS))-1)<<(BIT_NUM))))|(((1<<(NUM_BITS))-1)&(DATA))<<(BIT_NUM))));
 /*TODO will deleted after check if it's junk
 #define GPIO_READ_PORT(A_PORTX_ID) (PORTX)*/
 

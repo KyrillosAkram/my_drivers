@@ -40,7 +40,7 @@ typedef enum{
 	LCD_CMD_USE_1_LINES_5X7_DOTS_FOR_8BITS_MODE	= 0x30,
 	LCD_CMD_USE_2_LINES_5X7_DOTS_FOR_8BITS_MODE	= 0x38,
 	LCD_CMD_USE_1_LINES_5X7_DOTS_FOR_4BIT_MODE	= 0x20,
-	LCD_CMD_USE_2_LINES_5X7_DOTS_FOR_8BIT_MODE	= 0x28,
+	LCD_CMD_USE_2_LINES_5X7_DOTS_FOR_4BIT_MODE	= 0x28,
 	LCD_CMD_MODE_4BITS_1						= 0x32,
 	LCD_CMD_MODE_4BITS_2							  ,
 	LCD_CMD_MODE_8BITS_1LINES					= 0x30,
@@ -50,7 +50,7 @@ typedef enum{
 typedef enum{
 	START_OF_LINE_1 =0x80,
 	START_OF_LINE_2 =0xC0
-}LCD_Display_Position;
+}LCD_Display_Line;
 
 /****************************************************
  *  		Module macros and configuration         *
@@ -58,18 +58,26 @@ typedef enum{
 #define LCD_8BITS_MODE FALSE
 #define LCD_4BITS_MODE TRUE
 #define LCD_DATA_PORT_ID UNDEFINED
+#define LCD_DATA_PORT UNDEFINED
+#define LCD_DATA_OUTPUT UNDEFINED
+#define LCD_DATA_INPUT UNDEFINED
 #define LCD_DATA_FIRST_PIN_ID UNDEFINED
 #define LCD_COMMAND_PORT_ID UNDEFINED
+#define LCD_COMMAND_PORT UNDEFINED
+#define LCD_COMMAND_OUTPUT UNDEFINED
+#define LCD_COMMAND_INPUT UNDEFINED
 #define LCD_PIN_RS_ID UNDEFINED
 #define LCD_PIN_RW_ID UNDEFINED
 #define LCD_PIN_E_ID UNDEFINED
+#define LCD_ROW_WIDTH (16u)
+#define LCD_ROW_NUM (2u)
 //#define LCD_MEMORY_USAGE_OPTIMIZATION
 #ifdef LCD_MEMORY_USAGE_OPTIMIZATION
 #define LCD_Command_t char 	/* uint8 -> for less memory usage or LCD_Command (enum)  */
-#define LCD_Display_Position_t uint8
+/*#define LCD_Display_Position_t uint8*/
 #else
 #define LCD_Command_t LCD_Command
-#define LCD_Display_Position_t LCD_Display_Position
+/*#define LCD_Display_Position_t LCD_Display_Position*/
 #endif
 /*--------------------------------------------------*/
 
@@ -93,11 +101,10 @@ void LCD_init();
 void LCD_sendCommand(LCD_Command_t a_command);
 void LCD_displayCharacter(char a_char);
 void LCD_displayString(char* a_string);
-void LCD_moveCursorTo(LCD_Display_Position_t a_position);
-void LCD_displayStringRowColumn(char* a_string,LCD_Display_Position_t a_position);
+void LCD_moveCursorTo(uint8 a_row,uint8 a_col);
+void LCD_displayStringRowColumn(char* a_string,uint8 a_row,uint8 a_col);
 void LCD_clearScreen();
 void LCD_intgerToString(int8 a_intger,char* a_buffer_ptr);
 /*--------------------------------------------------*/
 
-#define LCD_PORT_ID
 #endif /* LCD_H_ */
