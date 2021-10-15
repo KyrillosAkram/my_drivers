@@ -72,6 +72,8 @@ typedef enum{
 #define LCD_ROW_WIDTH (16u)
 #define LCD_ROW_NUM (2u)
 //#define LCD_MEMORY_USAGE_OPTIMIZATION
+
+
 #ifdef LCD_MEMORY_USAGE_OPTIMIZATION
 #define LCD_Command_t char 	/* uint8 -> for less memory usage or LCD_Command (enum)  */
 /*#define LCD_Display_Position_t uint8*/

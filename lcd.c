@@ -126,6 +126,7 @@ void LCD_displayStringRowColumn(char* a_string,uint8 a_row,uint8 a_col){
 	}
 }
 
+
 void LCD_clearScreen(){
 	LCD_sendCommand(LCD_CMD_CLEAR_DISPLAY);
 }
