@@ -1,5 +1,5 @@
 /*
- * lcd.h
+ * TODO documenting lcd.h
  *
  *  Created on: Oct 13, 2021
  *      Author: Kyrillos

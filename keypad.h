@@ -56,7 +56,7 @@
 	(KEYPAD_ROW_ID          == UNDEFINED)||\
 	(KEYPAD_ROW_NUM         == UNDEFINED)||\
 	(KEYPAD_PULL_UP         == UNDEFINED)
-#error "a config macro in KEYPAD module is undefined"
+#error ==> a config macro in KEYPAD module is undefined
 #endif
 
 
