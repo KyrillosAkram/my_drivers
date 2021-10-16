@@ -1,5 +1,5 @@
 /*
- * TODO documenting  adc.h
+ * TODO documenting adc.h
  *
  *  Created on: Oct 16, 2021
  *      Author: Kyrillos
@@ -50,6 +50,12 @@ typedef enum{
 	ADC_FACTOR_64,
 	ADC_FACTOR_128
 }ADC_ClockDivisionType;
+
+typedef enum{
+	ADC_USE_AREF,
+	ADC_USE_AVCC,
+	ADC_USE_INTERNAL_2_56V=3
+}ADC_ReferenceType;
 /*--------------------------------------------------*/
 
 
@@ -59,6 +65,7 @@ typedef enum{
  ****************************************************/
 #define ADC_MAX_VALUE (1023)
 #define ADC_MIN_VALUE (0)
+#define ADC_REF_VALUE_X10 (50)
 
 /*--------------------------------------------------*/
 
@@ -69,13 +76,14 @@ typedef enum{
 /*
  * usage : depend on modifing sources implementation
  */
+#define ADC_INTERRUPT FALSE
 /*--------------------------------------------------*/
 
 
 /****************************************************
  *  			Module macro functions	         	*
  ****************************************************/
-
+#define ADC_WAIT_CONVERSION() while((ADCSRA>>ADSC));
 /*--------------------------------------------------*/
 
 
@@ -91,6 +99,8 @@ extern volatile uint16 g_adcLastRead;
  ****************************************************/
 void ADC_init();
 void ADC_readChannel(ADC_ChannelType a_channel_num);
+void ADC_startConversion(ADC_ChannelType a_channel_num);
+
 /*--------------------------------------------------*/
 
 

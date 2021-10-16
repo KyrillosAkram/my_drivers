@@ -5,7 +5,7 @@
  *      Author: Kyrillos
  */
 
-#include "lcd.h"
+#include "lm35_sensor.h"
 void LCD_init(){
 	GPIO_setupPinDirection(LCD_COMMAND_PORT_ID,LCD_PIN_E_ID,PIN_OUTPUT);
 	GPIO_setupPinDirection(LCD_COMMAND_PORT_ID,LCD_PIN_RS_ID,PIN_OUTPUT);
