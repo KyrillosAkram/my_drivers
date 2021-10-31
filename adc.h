@@ -40,22 +40,35 @@ typedef enum{
 
 
 typedef enum{
-	ADC_DEFAULT_DIVISION_2 ,
-	ADC_DEFAULT_PRESCALER =0,
-	ADC_FACTOR_2,
+	ADC_DEFAULT_DIVISION_2=1 ,
+	ADC_DEFAULT_PRESCALER =1,
+	ADC_FACTOR_2=1,
 	ADC_FACTOR_4,
 	ADC_FACTOR_8,
 	ADC_FACTOR_16,
 	ADC_FACTOR_32,
 	ADC_FACTOR_64,
-	ADC_FACTOR_128
+	ADC_FACTOR_128,
+	ADC_PRESCALER_2=1,
+	ADC_PRESCALER_4,
+	ADC_PRESCALER_8,
+	ADC_PRESCALER_16,
+	ADC_PRESCALER_32,
+	ADC_PRESCALER_64,
+	ADC_PRESCALER_128
 }ADC_ClockDivisionType;
 
 typedef enum{
-	ADC_USE_AREF,
-	ADC_USE_AVCC,
-	ADC_USE_INTERNAL_2_56V=3
+	ADC_REF_AREF,
+	ADC_REF_AVCC,
+	ADC_REF_INTERNAL_2_56V=3
 }ADC_ReferenceType;
+
+typedef struct{
+	ADC_ReferenceType ref_volt;
+	ADC_ClockDivisionType prescaler;
+}ADC_ConfigType;
+
 /*--------------------------------------------------*/
 
 
@@ -76,7 +89,7 @@ typedef enum{
 /*
  * usage : depend on modifing sources implementation
  */
-#define ADC_INTERRUPT FALSE
+#define ADC_INTERRUPT TRUE
 /*--------------------------------------------------*/
 
 
@@ -97,7 +110,7 @@ extern volatile uint16 g_adcLastRead;
 /****************************************************
  *				Functions deceleration				*
  ****************************************************/
-void ADC_init();
+void ADC_init(const ADC_ConfigType * Config_Ptr);
 void ADC_readChannel(ADC_ChannelType a_channel_num);
 void ADC_startConversion(ADC_ChannelType a_channel_num);
 

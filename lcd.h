@@ -14,7 +14,6 @@
 #include <util/delay.h>
 
 
-
 /****************************************************
  *				Types deceleration					*
  ****************************************************/
@@ -35,8 +34,11 @@ typedef enum{
 	LCD_CMD_SHIFT_CURSOR_POSITION_RIGHT			= 0x14,
 	LCD_CMD_SHIFT_ENTIRE_DISPLAY_LEFT			= 0x18,
 	LCD_CMD_SHIFT_CURSOR_DISPLAY_RIGHT			= 0x1C,
-	LCD_CMD_MOVE_CURSOR_TO_BEGINNING_1ST_LINE	= 0x80,
-	LCD_CMD_MOVE_CURSOR_TO_BEGINNING_2ND_LINE	= 0xC0,
+	LCD_CMD_MOVE_CURSOR							= 0x80,
+	LCD_CMD_MOVE_CURSOR_TO_START_OF_LINE_0		= 0x80,
+	LCD_CMD_MOVE_CURSOR_TO_START_OF_LINE_1		= 0xC0,
+	LCD_CMD_MOVE_CURSOR_TO_START_OF_LINE_2		= 0x90,
+	LCD_CMD_MOVE_CURSOR_TO_START_OF_LINE_3		= 0xD0,
 	LCD_CMD_USE_1_LINES_5X7_DOTS_FOR_8BITS_MODE	= 0x30,
 	LCD_CMD_USE_2_LINES_5X7_DOTS_FOR_8BITS_MODE	= 0x38,
 	LCD_CMD_USE_1_LINES_5X7_DOTS_FOR_4BIT_MODE	= 0x20,
@@ -48,27 +50,29 @@ typedef enum{
 }LCD_Command;
 
 typedef enum{
-	START_OF_LINE_1 =0x80,
-	START_OF_LINE_2 =0xC0
+	START_OF_LINE_0 =0x00,
+	START_OF_LINE_1 =0x40,
+	START_OF_LINE_2 =0x10,
+	START_OF_LINE_3 =0x50
 }LCD_Display_Line;
 
 /****************************************************
  *  		Module macros and configuration         *
  ****************************************************/
-#define LCD_8BITS_MODE FALSE
-#define LCD_4BITS_MODE TRUE
-#define LCD_DATA_PORT_ID UNDEFINED
-#define LCD_DATA_PORT UNDEFINED
-#define LCD_DATA_OUTPUT UNDEFINED
-#define LCD_DATA_INPUT UNDEFINED
-#define LCD_DATA_FIRST_PIN_ID UNDEFINED
-#define LCD_COMMAND_PORT_ID UNDEFINED
-#define LCD_COMMAND_PORT UNDEFINED
-#define LCD_COMMAND_OUTPUT UNDEFINED
-#define LCD_COMMAND_INPUT UNDEFINED
-#define LCD_PIN_RS_ID UNDEFINED
-#define LCD_PIN_RW_ID UNDEFINED
-#define LCD_PIN_E_ID UNDEFINED
+#define LCD_8BITS_MODE TRUE
+#define LCD_4BITS_MODE FALSE
+#define LCD_DATA_PORT_ID PORTC_ID
+#define LCD_DATA_PORT PORTC
+#define LCD_DATA_OUTPUT PORTC
+#define LCD_DATA_INPUT PINC
+#define LCD_DATA_FIRST_PIN_ID 0
+#define LCD_COMMAND_PORT_ID PORTD_ID
+#define LCD_COMMAND_PORT PORTD
+#define LCD_COMMAND_OUTPUT PORTD
+#define LCD_COMMAND_INPUT PIND
+#define LCD_PIN_RS_ID PIN0_ID
+#define LCD_PIN_RW_ID PIN1_ID
+#define LCD_PIN_E_ID PIN2_ID
 #define LCD_ROW_WIDTH (16u)
 #define LCD_ROW_NUM (2u)
 //#define LCD_MEMORY_USAGE_OPTIMIZATION
@@ -88,11 +92,11 @@ typedef enum{
  *  			Module macro functions	         	*
  ****************************************************/
 #if F_CPU < 1000000000UL
-#define LCD_DELAY() _delay_ms(1)
+#define LCD_DELAY() _delay_us(1)
 #else
 /*TODO optimize lcd delay*/
 #warning "LCD_DELAY() not optimized"
-#define LCD_DELAY() _delay_ms(1)
+#define LCD_DELAY() _delay_us(1)
 #endif
 /*--------------------------------------------------*/
 
@@ -102,9 +106,9 @@ typedef enum{
 void LCD_init();
 void LCD_sendCommand(LCD_Command_t a_command);
 void LCD_displayCharacter(char a_char);
-void LCD_displayString(char* a_string);
-void LCD_moveCursorTo(uint8 a_row,uint8 a_col);
-void LCD_displayStringRowColumn(char* a_string,uint8 a_row,uint8 a_col);
+void LCD_displayString(const char* a_string);
+void LCD_moveCursor(uint8 a_row,uint8 a_col);
+void LCD_displayStringRowColumn(uint8 a_row,uint8 a_col,char* a_string);
 void LCD_clearScreen();
 void LCD_intgerToString(int8 a_intger,char* a_buffer_ptr);
 /*--------------------------------------------------*/

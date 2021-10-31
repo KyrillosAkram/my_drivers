@@ -56,6 +56,11 @@
 #ifndef UNDEFINED
 	#define UNDEFINED (-1u)
 #endif
+
+#ifndef loop_for_ever
+	#define loop_for_ever for(;;)
+#endif
+
 /*----------------------------------------------------------------------*/
 
 
@@ -63,12 +68,12 @@
 
 /*To check if a certain bit is cleared or not in a 8bit register*/
 #ifndef BIT_IS_CLEAR
-	#define BIT_IS_CLEAR(REG,BIT_NUM) (!(((REG))&(1<<(BIT_NUM))));
+	#define BIT_IS_CLEAR(REG,BIT_NUM) (!(((REG))&(1<<(BIT_NUM))))
 #endif
 
 /*To check if a certain bit is set or not in a 8bit register*/
 #ifndef BIT_IS_SET
-	#define BIT_IS_SET(REG,BIT_NUM)  ((REG)&(1<<(BIT_NUM)));
+	#define BIT_IS_SET(REG,BIT_NUM)  ((REG)&(1<<(BIT_NUM)))
 #endif
 
 /*To make a rotating shift to left*/
@@ -98,9 +103,9 @@
 
 #define FIRST_BITS_HIGH(NUM) ((1<<(NUM))-1)
 
-#define REGESTER_INSERT_BIT(REG,BIT_NUM,BOOLEAN_DATA) ((((REG)&(~(1<<(BIT_NUM))))|((BOOLEAN_DATA)<<(BIT_NUM))))
+#define REGESTER_INSERT_BIT(REG,BIT_NUM,BOOLEAN_DATA) (REG)=((((REG)&(~(1<<(BIT_NUM))))|((BOOLEAN_DATA)<<(BIT_NUM))));
 
-#define REGESTER_INSERT_SUCCESSIVE_BITS(REG,BIT_NUM,NUM_BITS,DATA) ((((REG)&(~(((1<<(NUM_BITS))-1)<<(BIT_NUM))))|(((1<<(NUM_BITS))-1)&(DATA))<<(BIT_NUM))))
+#define REGESTER_INSERT_SUCCESSIVE_BITS(REG,BIT_NUM,NUM_BITS,DATA) (REG)=(((((REG)&(~(((1<<(NUM_BITS))-1)<<(BIT_NUM))))|(((1<<(NUM_BITS))-1)&(DATA))<<(BIT_NUM))));
 /*----------------------------------------------------------------------*/
 
 

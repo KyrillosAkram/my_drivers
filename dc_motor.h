@@ -10,6 +10,7 @@
 #ifndef DC_MOTOR_H_
 #define DC_MOTOR_H_
 
+#include "common_macros.h"
 #include "pwm.h"
 #include "gpio.h"
 #include "avr/io.h"
@@ -32,11 +33,6 @@ typedef enum{
 #define DC_MOTOR_PIN_IN2 PIN4
 /*--------------------------------------------------*/
 
-/****************************************************
- *  			Module macros constants	         	*
- ****************************************************/
-#define OFF 0u
-/*--------------------------------------------------*/
 
 /****************************************************
  *  			Module global variable	         	*
