@@ -3,6 +3,8 @@
  *
  *  Created on: Oct 23, 2021
  *      Author: Kyrillos
+ * Description: ultrasonic driver for generating trigger signal
+ * 				and calculate time it takes to receive the echo
  */
 
 

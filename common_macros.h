@@ -61,6 +61,15 @@
 	#define loop_for_ever for(;;)
 #endif
 
+#define BIT0 (1<<0)
+#define BIT1 (1<<1)
+#define BIT2 (1<<2)
+#define BIT3 (1<<3)
+#define BIT4 (1<<4)
+#define BIT5 (1<<5)
+#define BIT6 (1<<6)
+#define BIT7 (1<<7)
+
 /*----------------------------------------------------------------------*/
 
 
@@ -102,6 +111,8 @@
 #endif
 
 #define FIRST_BITS_HIGH(NUM) ((1<<(NUM))-1)
+
+#define BIT_MASK(NUM) (1<<(NUM))
 
 #define REGESTER_INSERT_BIT(REG,BIT_NUM,BOOLEAN_DATA) (REG)=((((REG)&(~(1<<(BIT_NUM))))|((BOOLEAN_DATA)<<(BIT_NUM))));
 

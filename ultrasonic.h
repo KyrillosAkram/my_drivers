@@ -3,6 +3,8 @@
  *
  *  Created on: Oct 23, 2021
  *      Author: Kyrillos
+ * Description: ultrasonic driver for generating trigger signal
+ * 				and calculate time it takes to receive the echo
  */
 
 #ifndef ULTRASONIC_H_
@@ -21,6 +23,9 @@
 #define ULTRASONIC_ECHO_PORT_ID PORTD_ID
 #define ULTRASONIC_ECHO_PIN_ID (6u)
 #define ULTRASONIC_SONIC_SPEED_X1000 (343333U)
+
+/*TODO : add ablity to use external interrupt and timer or icu*/
+
 /*--------------------------------------------------*/
 
 
