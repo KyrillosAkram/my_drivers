@@ -18,7 +18,7 @@
 #include <avr/io.h>
 
 #define PRESCALER_BITS_NUM (3u)
-#ifdef _AVR_IOM16_H_ | _AVR_IOM32_H_
+#if _AVR_IOM16_H_ | _AVR_IOM32_H_
 #define CTC0 (1u) /*WGM01*/
 #define CTC1 (3u) /*WGM12*/
 #define CTC2 (1u) /*WGM01*/
@@ -28,7 +28,8 @@
 
 
 
-static void(*callBack[7])();
+
+
 
 typedef enum{
 	TIMER_CALLBACK_TIMER2_COMP,
@@ -132,6 +133,9 @@ typedef struct{
  *		out:
  *			void
  */
+static void(*callBack[7])();
+
+
 
 void TIMER_init(Timer_ConfigType* config_ptr);
 

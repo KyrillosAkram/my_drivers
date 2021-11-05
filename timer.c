@@ -234,5 +234,5 @@ void TIMER_deinit(Timer_IDType a_timer_id){
 	}
 }
 void TIMER_setCallBack(uint8 a_timer_callBack_id,void(*callBack_ptr)(void)){
-	*callBack[a_timer_callBack_id]=callBack_ptr;
+	(callBack[a_timer_callBack_id])=callBack_ptr;
 }
