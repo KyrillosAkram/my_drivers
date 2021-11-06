@@ -133,7 +133,7 @@ typedef struct{
  *		out:
  *			void
  */
-static void(*callBack[7])();
+volatile static void(*callBack[7])();
 
 
 

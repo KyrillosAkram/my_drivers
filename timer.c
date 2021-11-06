@@ -127,7 +127,8 @@ void TIMER_init(Timer_ConfigType* config_ptr){
 				switch(config_ptr->mode){
 					case CTC1_TOP_OCR1A://0100
 						TCCR1A&=(~(FIRST_BITS_HIGH(2)))|	/*clear WGM10 and WGM11*/
-								(1<<FOC1B)|(1<<FOC1A);		/*we assume that using this function only mean no pwm */
+								(((TCCR1A>>COM1B0)&FIRST_BITS_HIGH(2))?(/*PWM*/OFF):(/*PWM ON*/1<<FOC1B))|
+								(((TCCR1A>>COM1A0)&FIRST_BITS_HIGH(2))?(/*PWM*/OFF):(/*PWM ON*/1<<FOC1A));
 						REGESTER_INSERT_SUCCESSIVE_BITS(TCCR1B,(WGM12),2,0b01);
 						OCR1A=	(config_ptr->compare_value);
 
@@ -147,7 +148,10 @@ void TIMER_init(Timer_ConfigType* config_ptr){
 							REGESTER_INSERT_BIT(TIMSK,OCIE1A,ON);
 							REGESTER_INSERT_BIT(TIMSK,TOIE1,OFF);
 
-						}						break;
+						}
+						if(config_ptr->mode==(CTC1_TOP_OCR1A)){
+							break;
+						}
 						TCCR1A&=(~(FIRST_BITS_HIGH(2)))|	/*clear WGM10 and WGM11*/
 								(1<<FOC1B)|(1<<FOC1A);		/*we assume that using this function only mean no pwm */
 						REGESTER_INSERT_SUCCESSIVE_BITS(TCCR1B,(WGM12),2,0b11);
