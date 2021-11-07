@@ -13,14 +13,15 @@
 #define BUZZER_PWM_ID PWM0_ID
 #define BUZZER_TIMER_ID TIMER0_ID
 #define BUZZER_PORT_ID PWM0_PORT_ID
-#define BUZZER_PIN_ID PWM0_PIN_ID
-#define BUZZER_TIMEOUT_CALLBACK TRUE
+#define BUZZER_PIN_ID PWM0_PIN
+#define BUZZER_TIMEOUT_CALLBACK FALSE
+#define BUZZER_CTC 1
 
 extern PWM_ConfigType es_buzzerConfig;
 
 
 
-void BUZZER_init(PWM_ConfigType* buzzerConfig_ptr);
+void BUZZER_init(PWM_ConfigType *buzzerConfig_ptr);
 
 
 

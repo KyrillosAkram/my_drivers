@@ -111,7 +111,7 @@ void TIMER_init(Timer_ConfigType* config_ptr){
 			/*after the following timer works with new configation*/
 			TCCR0=
 
-					((((config_ptr->mode)&BIT0)?(0):(1))<<FOC0) |
+					(((config_ptr->mode&BIT0)^BIT0)<<FOC0) |
 					(((config_ptr->mode)&BIT0)<<WGM00)|(((config_ptr->mode)&BIT1)<<WGM01) |
 					((config_ptr->prescaler)&FIRST_BITS_HIGH(3)) ;
 
@@ -120,15 +120,18 @@ void TIMER_init(Timer_ConfigType* config_ptr){
 			/*to freeze timer and prevent it from increment TCNT0*/
 			TCCR1B&= ~FIRST_BITS_HIGH((PRESCALER_BITS_NUM));
 
-			/*configering*/
+			/*Configuring*/
 			TCNT1=	(config_ptr->counter_init_value);
 			if(config_ptr->mode){
 				/*CTC and other*/
 				switch(config_ptr->mode){
 					case CTC1_TOP_OCR1A://0100
+						/*TODO Test*/
 						TCCR1A&=(~(FIRST_BITS_HIGH(2)))|	/*clear WGM10 and WGM11*/
-								(((TCCR1A>>COM1B0)&FIRST_BITS_HIGH(2))?(/*PWM*/OFF):(/*PWM ON*/1<<FOC1B))|
-								(((TCCR1A>>COM1A0)&FIRST_BITS_HIGH(2))?(/*PWM*/OFF):(/*PWM ON*/1<<FOC1A));
+								//(((TCCR1A>>COM1B0)&FIRST_BITS_HIGH(2))?(/*PWM*/OFF):(/*PWM ON*/1<<FOC1B))|
+								//(((TCCR1A>>COM1A0)&FIRST_BITS_HIGH(2))?(/*PWM*/OFF):(/*PWM ON*/1<<FOC1A));
+								((config_ptr->mode)&(FIRST_BITS_HIGH(2))?((OFF<<FOC1A)|(OFF<<FOC1B)):((ON<<FOC1A)|(ON<<FOC1B)))
+								;
 						REGESTER_INSERT_SUCCESSIVE_BITS(TCCR1B,(WGM12),2,0b01);
 						OCR1A=	(config_ptr->compare_value);
 
@@ -153,7 +156,8 @@ void TIMER_init(Timer_ConfigType* config_ptr){
 							break;
 						}
 						TCCR1A&=(~(FIRST_BITS_HIGH(2)))|	/*clear WGM10 and WGM11*/
-								(1<<FOC1B)|(1<<FOC1A);		/*we assume that using this function only mean no pwm */
+								/*TODO TEST(1<<FOC1B)|(1<<FOC1A);*/		/*we assume that using this function only mean no pwm */
+								((config_ptr->mode)&(FIRST_BITS_HIGH(2))?((OFF<<FOC1A)|(OFF<<FOC1B)):((ON<<FOC1A)|(ON<<FOC1B)));
 						REGESTER_INSERT_SUCCESSIVE_BITS(TCCR1B,(WGM12),2,0b11);
 						ICR1 =	(config_ptr->compare_value);
 						break;
@@ -164,7 +168,8 @@ void TIMER_init(Timer_ConfigType* config_ptr){
 				/*normal mode
 				 * so compare value is 0xFFFF
 				 * we assume that using this function only mean no pwm */
-				REGESTER_INSERT_SUCCESSIVE_BITS(TCCR1A,(FOC1B),2,0b11);
+				/*TODO TEST*/
+				REGESTER_INSERT_SUCCESSIVE_BITS(TCCR1A,((config_ptr->mode)&(FIRST_BITS_HIGH(2))?((OFF<<FOC1A)|(OFF<<FOC1B)):((ON<<FOC1A)|(ON<<FOC1B))),2,0b11);
 				/*
 				 * Interrupt section
 				 * note:
@@ -185,7 +190,7 @@ void TIMER_init(Timer_ConfigType* config_ptr){
 				REGESTER_INSERT_BIT(TIMSK,TOIE1,OFF);
 			}
 
-			/*after the following timer works with new configation*/
+			/*after the following timer works with new configuration*/
 			TCCR1B|=((config_ptr->prescaler	)&FIRST_BITS_HIGH(3)) ;
 			break;
 
@@ -194,7 +199,7 @@ void TIMER_init(Timer_ConfigType* config_ptr){
 			/*to freeze timer and prevent it from increment TCNT0*/
 			TCCR2&= ~FIRST_BITS_HIGH((PRESCALER_BITS_NUM));
 
-			/*configering*/
+			/*Configuring*/
 			TCNT2=	(uint8)(config_ptr->counter_init_value);
 			OCR2 =	(uint8)(config_ptr->compare_value);
 
@@ -211,7 +216,7 @@ void TIMER_init(Timer_ConfigType* config_ptr){
 			/*after the following timer works with new configation*/
 			TCCR2=
 
-					((((config_ptr->mode)&BIT0)?(0):(1))<<FOC2) |
+					(((config_ptr->mode&BIT0)^BIT0)<<FOC2) |
 					(((config_ptr->mode)&BIT0)<<WGM20)|(((config_ptr->mode)&BIT1)<<WGM21) |
 					((config_ptr->prescaler)&FIRST_BITS_HIGH(3)) ;
 

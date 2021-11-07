@@ -20,14 +20,14 @@ static volatile const int32 g_prescaler_factor2 [6]={1,8,32,64,256,1024};
  * Note : this function will delete in next first release
  * Description :
  * 		initialize Timer 0 and output compare unit on the fly to
- * 		get PWM on OC0 with feeded duty cycle
+ * 		get PWM on OC0 with given duty cycle
  * Args:
  * 		In:
  * 			uint8 duty_cycle:
  *
- * 				* the precentage value of the desired duty cycle
+ * 				* the percentage value of the desired duty cycle
  *
- * 				* the type of unsigned intger of 1 byte
+ * 				* the type of unsigned integer of 1 byte
  * */
 void PWM_Timer0_Start(uint8 duty_cycle){
 	OCR0=((uint8)(((uint32)(duty_cycle*255))/100));
@@ -41,27 +41,49 @@ void PWM_Timer0_Start(uint8 duty_cycle){
  *
  */
 void PWM_init(PWM_ConfigType *config_ptr){
-	uint8 matched=0;
+	//uint8 matched=1;
 	switch(config_ptr->a_pwmID){
 		case PWM0_ID:
 			GPIO_setupPinDirection(PWM0_PORT_ID,PWM0_PIN,PIN_OUTPUT);
-			REGESTER_INSERT_SUCCESSIVE_BITS(TCCR0,COM00,2,(0b10|(config_ptr->a_signalType))) ;
+			if(config_ptr->timer_config.mode&BIT0){
+				/*PWM mode*/
+				REGESTER_INSERT_SUCCESSIVE_BITS(TCCR0,COM00,2,(0b10|(config_ptr->a_signalType))) ;
+			}else{
+				/*CTC mode*/
+				REGESTER_INSERT_SUCCESSIVE_BITS(TCCR0,COM00,2,OC_PIN_TOGGLE) ;
+			}
 
 			break;
 
 		case PWM1A_ID:
 			GPIO_setupPinDirection(PWM1A_PORT_ID,PWM1A_PIN,PIN_OUTPUT);
-			REGESTER_INSERT_SUCCESSIVE_BITS(TCCR1A,COM1A0,2,(0b10|(config_ptr->a_signalType))) ;
+			if(config_ptr->timer_config.mode&BIT0){
+				/*PWM mode*/
+				REGESTER_INSERT_SUCCESSIVE_BITS(TCCR1A,COM1A0,2,(0b10|(config_ptr->a_signalType))) ;
+			}else{
+				REGESTER_INSERT_SUCCESSIVE_BITS(TCCR1A,COM1A0,2,OC_PIN_TOGGLE);
+			}
 			break;
 
 		case PWM1B_ID:
 			GPIO_setupPinDirection(PWM1B_PORT_ID,PWM1B_PIN,PIN_OUTPUT);
-			REGESTER_INSERT_SUCCESSIVE_BITS(TCCR1A,COM1B0,2,(0b10|(config_ptr->a_signalType))) ;
+			if(config_ptr->timer_config.mode&BIT0){
+				/*PWM mode*/
+				REGESTER_INSERT_SUCCESSIVE_BITS(TCCR1A,COM1B0,2,(0b10|(config_ptr->a_signalType))) ;
+			}else{
+				REGESTER_INSERT_SUCCESSIVE_BITS(TCCR0,COM00,2,OC_PIN_TOGGLE) ;
+			}
 			break;
 
 		case PWM2_ID:
 			GPIO_setupPinDirection(PWM0_PORT_ID,PWM0_PIN,PIN_OUTPUT);
-			REGESTER_INSERT_SUCCESSIVE_BITS(TCCR0,COM00,2,(0b10|(config_ptr->a_signalType))) ;
+			if(config_ptr->timer_config.mode&BIT0){
+				/*PWM mode*/
+				REGESTER_INSERT_SUCCESSIVE_BITS(TCCR0,COM00,2,(0b10|(config_ptr->a_signalType))) ;
+			}else{
+				REGESTER_INSERT_SUCCESSIVE_BITS(TCCR0,COM00,2,OC_PIN_TOGGLE) ;
+			}
+
 			break;
 
 		default:
@@ -69,7 +91,9 @@ void PWM_init(PWM_ConfigType *config_ptr){
 			return;
 			break;
 	}
-	if(matched)TIMER_init(&(config_ptr->timer_config));
+
+	TIMER_init(&(config_ptr->timer_config));
+
 }
 
 /*
@@ -138,4 +162,4 @@ void PWM_deinit(PWM_IDType a_pwmID){
 
 }
 
-PWM_disconnect=PWM_deinit;
+void (*PWM_disconnect)(PWM_IDType a_pwmID)=PWM_deinit;

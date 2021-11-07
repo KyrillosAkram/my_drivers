@@ -32,6 +32,10 @@
 #define PWM2_PORT 		PORTD
 #define PWM2_PIN		PIN7
 
+#define OC_PIN_TOGGLE (1u)
+
+#else
+#error supports pwm and compare units on atmega 16/32 only
 #endif
 
 typedef enum{
@@ -78,7 +82,7 @@ void PWM_Timer0_Start(uint8 duty_cycle);
 /*
  * Description :
  */
-void PWM_init(PWM_IDType a_pwmID);
+void PWM_init(PWM_ConfigType *config_ptr);
 void PWM_genrate_pwm(PWM_IDType a_pwmID,uint32 a_freq,uint8 a_dutyCycle,PWM_SignalType a_mode);
 void PWM_deinit(PWM_IDType a_pwmID);
 extern void (*PWM_disconnect)(PWM_IDType a_pwmID);
